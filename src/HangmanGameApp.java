@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class HangmanGameApp {
-    private static final int MAX_MISTAKES = 10;
     private Scanner input;
     private HangmanGame hangmanGame;
 
@@ -59,22 +58,10 @@ public class HangmanGameApp {
             System.exit(0);
         }
 
-        int j = 0;
         for (int i = 0; i < hangmanGame.getKeyWord().length(); i++) {
-            String str = String.valueOf(hangmanGame.getKeyWord().charAt(i)).toLowerCase();
-            if (str.equals(command)) {
-                hangmanGame.changeSpaces(i, String.valueOf(hangmanGame.getKeyWord().charAt(i)));
-                System.out.print(hangmanGame.getSpaces().get(i));
-                j = 1;
-            } else {
-                System.out.print(hangmanGame.getSpaces().get(i));
-            }
+            hangmanGame.checkInput(command, i);
         }
-        if (j == 0) {
-            System.out.println("\nIncorrect!");
-            hangmanGame.addMistake();
-            System.out.println("You have " + (MAX_MISTAKES - hangmanGame.getMistakes()) + " attempts remaining");
-        }
+        hangmanGame.incorrectGuess();
     }
 
     private void displayMenu() {

@@ -11,7 +11,9 @@ public class HangmanGame {
     private String keyWord;
     private List<String> spaces;
     private boolean gameStatus;
+    private int j;
     public HangmanGame(String str) throws FileNotFoundException {
+        j = 0;
         spaces = new ArrayList<>();
         mistake = 0;
         new WordBank(str);
@@ -56,5 +58,25 @@ public class HangmanGame {
 
     public void changeSpaces(int i, String str) {
         spaces.set(i,str);
+    }
+    
+    public void checkInput(String str, int i) {
+        if (str.equals(String.valueOf(keyWord.charAt(i)))) {
+            changeSpaces(i, String.valueOf(getKeyWord().charAt(i)));
+            System.out.print(getSpaces().get(i));
+            j = 1;
+        } else {
+            System.out.print(getSpaces().get(i));
+        }
+    }
+
+    public void incorrectGuess() {
+        if (j == 0) {
+            System.out.println("\nIncorrect!");
+            addMistake();
+            System.out.println("You have " + (MAX_MISTAKES - getMistakes()) + " attempts remaining");
+        } else {
+            j = 0;
+        }
     }
 }
