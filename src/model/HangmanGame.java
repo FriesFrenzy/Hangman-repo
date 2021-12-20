@@ -11,10 +11,10 @@ public class HangmanGame {
     private String keyWord;
     private List<String> spaces;
     private boolean gameStatus;
-    public HangmanGame() throws FileNotFoundException {
+    public HangmanGame(String str) throws FileNotFoundException {
         spaces = new ArrayList<>();
         mistake = 0;
-        new WordBank();
+        new WordBank(str);
         keyWord = "";
         gameStatus = true;
         generateWord();
@@ -24,7 +24,11 @@ public class HangmanGame {
         Random rand = new Random();
         keyWord = WordBank.getWords().get(rand.nextInt(WordBank.getWords().size()));
         for (int i = 0; i < keyWord.length(); i++) {
-            spaces.add("_");
+            if (String.valueOf(keyWord.charAt(i)).equals(" ")) {
+                spaces.add(" ");
+            } else {
+                spaces.add("_");
+            }
         }
     }
 

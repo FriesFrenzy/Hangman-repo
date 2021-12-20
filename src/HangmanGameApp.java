@@ -9,10 +9,27 @@ public class HangmanGameApp {
     private HangmanGame hangmanGame;
 
     public HangmanGameApp() throws FileNotFoundException {
-        hangmanGame = new HangmanGame();
         input = new Scanner(System.in);
 
-        runGame();
+        startUp();
+    }
+
+
+    public void startUp() throws FileNotFoundException {
+        System.out.println("Welcome to Hangman!");
+        System.out.println("Which mode would you like to play?");
+        System.out.println("a) regular \nb) League of Legends Champion Names");
+        String str = input.next();
+        if (str.equals("a")) {
+            hangmanGame = new HangmanGame("data/words_alpha.txt");
+            runGame();
+        } else if (str.equals("b")) {
+            hangmanGame = new HangmanGame("data/LeagueChamps.txt");
+            runGame();
+        } else {
+            System.out.println("Invalid Input, Please Try again");
+            startUp();
+        }
     }
 
     public void runGame() {
@@ -37,16 +54,16 @@ public class HangmanGameApp {
     }
 
     private void processCommand(String command) {
-        if (command.equals(hangmanGame.getKeyWord())) {
+        if (command.equals(hangmanGame.getKeyWord().toLowerCase())) {
             System.out.println("Congratulations you win!");
             System.exit(0);
         }
 
         int j = 0;
         for (int i = 0; i < hangmanGame.getKeyWord().length(); i++) {
-            String str = String.valueOf(hangmanGame.getKeyWord().charAt(i));
+            String str = String.valueOf(hangmanGame.getKeyWord().charAt(i)).toLowerCase();
             if (str.equals(command)) {
-                hangmanGame.changeSpaces(i, command);
+                hangmanGame.changeSpaces(i, String.valueOf(hangmanGame.getKeyWord().charAt(i)));
                 System.out.print(hangmanGame.getSpaces().get(i));
                 j = 1;
             } else {
@@ -61,11 +78,14 @@ public class HangmanGameApp {
     }
 
     private void displayMenu() {
-        System.out.println("Welcome to Hangman!");
         int size = hangmanGame.getKeyWord().length();
         System.out.println("Your word has " + size + " letters");
-        for (int i = 0; i < size; i++) {
-            System.out.print("_");
+        for (int i = 0; i < hangmanGame.getKeyWord().length(); i++) {
+            if (String.valueOf(hangmanGame.getKeyWord().charAt(i)).equals(" ")) {
+                System.out.print(" ");
+            } else {
+                System.out.print("_");
+            }
         }
     }
 }
